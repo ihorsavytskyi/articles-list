@@ -9,18 +9,22 @@
         <!--FiltersList-->
         <div class="articles-list__filters">          
           <FiltersList
-            :filterItems="filterItems"
+            :filtersList="filtersList"
             @handleFilter="handleFilter"        
           />
-        </div>
-        <p> {{ JSON.stringify(activatedFilters) }} </p>
+        </div>        
         <!--ArticlesList-->         
         <div class="article-list__items">             
-          <ArticleItem
-            v-for="(articleItem, index) in articleItems"
-            :articleItem="articleItem"
-            :key="index"
-          />     
+          <template v-if="articleItems.length === 0">
+            <p class="error-message">{{ errorMessage }}</p>
+          </template>            
+          <template v-else>
+            <ArticleItem
+              v-for="(articleItem, index) in articleItems"
+              :articleItem="articleItem"
+              :key="index"
+            />     
+          </template>                  
         </div>
       </template>      
     </div>   
@@ -60,8 +64,20 @@
   })
 
   const activatedFilters = ref([]);
-  const currentDate = (props.currentDate !== '') ? new Date(props.currentDate) : getNewestArticleDate(props.articlesList);
-  console.log(currentDate)
+
+  const currentDate = (props.currentDate !== '') ? new Date(props.currentDate) : getNewestArticleDate(props.articlesList);  
+
+  const formatDate = (date) => {
+    return date.toLocaleString("en-US", {
+      month: "long", 
+      day: "numeric", 
+      year: "numeric"
+    })
+  }
+
+  const filtersList = computed(() => {      
+    return (props.filterItems.length) ? props.filterItems : Array.from(new Set(props.articlesList.map(article => article.category)))
+  })
 
   const articleItems = computed(() => {
     let articles = props.articlesList;
@@ -84,6 +100,10 @@
     return articles;
   })
 
+  const errorMessage = computed(() => {
+    return `Sorry, but there are no articles available between ${formatDate(getFirstDateForPeriodToDisplay(currentDate, props.limitOfDaysToDisplay))} and ${formatDate(new Date(currentDate))}${activatedFilters.value.length !== 1 ? ' for all categories ' : ' for chosen category '}`
+  })
+
   const handleFilter = (filter) => {
     if(activatedFilters.value.includes(filter)) {
       return activatedFilters.value.splice(activatedFilters.value.indexOf(filter), 1)
@@ -92,12 +112,14 @@
     return activatedFilters.value.push(filter)
   }
 
-  console.log(getFirstDateForPeriodToDisplay(currentDate, props.limitOfDaysToDisplay))
-
-
 </script>
 
 <style scoped>
+  .preloader,
+  .error-message {
+    font-size: 1.2rem;
+    text-align: center;
+  }
   .articles-list {
     display: block;
     width: 100%;

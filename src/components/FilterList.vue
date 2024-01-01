@@ -1,6 +1,6 @@
 <template>
   <div class="filter-item"
-    v-for="(filterItem, index) in filterItems"
+    v-for="(filterItem, index) in filtersList"
     :key="index">
     <input 
       type="checkbox"
@@ -15,7 +15,7 @@
 <script setup>
   const emits = defineEmits(['handleFilter']);
   const props = defineProps({
-    filterItems: {
+    filtersList: {
       type: Array,
       required: true
     }
