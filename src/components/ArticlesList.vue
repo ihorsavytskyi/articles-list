@@ -101,6 +101,14 @@
   })
 
   const errorMessage = computed(() => {
+    if(props.limitOfNumberArticlesToDisplay < 1) {
+      return "Please set correct value for property maximum number of articles that should be display";
+    }
+
+    if(props.limitOfDaysToDisplay < 1) {
+      return "Please set correct value for property limit of days that should be display";
+    }
+
     return `Sorry, but there are no articles available between ${formatDate(getFirstDateForPeriodToDisplay(currentDate, props.limitOfDaysToDisplay))} and ${formatDate(new Date(currentDate))}${activatedFilters.value.length !== 1 ? ' for all categories ' : ' for chosen category '}`
   })
 

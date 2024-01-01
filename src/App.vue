@@ -17,7 +17,7 @@
   const isLoading = ref(true);
   const limitOfNumberArticlesToDisplay = 5;
   const limitOfDaysToDisplay = 7;
-  const currentDate = "2023-06-03T13:51:50.417Z";
+  const currentDate = "2023-06-03T13:51:50.417Z";  
   const filterItems = ['news', 'essay'];
 
   onMounted(async () => {
