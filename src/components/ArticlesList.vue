@@ -8,10 +8,12 @@
       <template v-else>
         <!--FiltersList-->
         <div class="articles-list__filters">          
-          <FiltersList   
-            :filterItems="filterItems"            
+          <FiltersList
+            :filterItems="filterItems"
+            @handleFilter="handleFilter"        
           />
         </div>
+        <p> {{ JSON.stringify(activatedFilters) }} </p>
         <!--ArticlesList-->         
         <div class="article-list__items">             
           <ArticleItem
@@ -26,7 +28,7 @@
 </template>
 
 <script setup>
-
+  import { ref, computed} from "vue";
   import FiltersList from "../components/FilterList.vue";
   import ArticleItem from "../components/ArticleItem.vue";
 
@@ -55,6 +57,15 @@
     }
   })
 
+  const activatedFilters = ref([]);
+
+  const handleFilter = (filter) => {
+    if(activatedFilters.value.includes(filter)) {
+      return activatedFilters.value.splice(activatedFilters.value.indexOf(filter), 1)
+    }
+
+    return activatedFilters.value.push(filter)
+  }
 
 </script>
 
