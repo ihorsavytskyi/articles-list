@@ -1,3 +1,14 @@
+<template>  
+  <ArticlesList
+    :articlesList="articlesList"
+    :isLoading="isLoading"
+    :limitOfNumberArticlesToDisplay="limitOfNumberArticlesToDisplay"
+    :limitOfDaysToDisplay="limitOfDaysToDisplay"
+    :currentDate="currentDate"
+    :filterItems="filterItems"
+  />
+</template>
+
 <script setup>
   import { ref, onMounted } from "vue";
   import ArticlesList from "./components/ArticlesList.vue";
@@ -18,20 +29,4 @@
       isLoading.value = false;
     }    
   })
-
 </script>
-
-<template>  
-  <ArticlesList
-    :articlesList="articlesList"
-    :isLoading="isLoading"
-    :limitOfNumberArticlesToDisplay="limitOfNumberArticlesToDisplay"
-    :limitOfDaysToDisplay="limitOfDaysToDisplay"
-    :currentDate="currentDate"
-    :filterItems="filterItems"
-  />
-</template>
-
-<style scoped>
-
-</style>
