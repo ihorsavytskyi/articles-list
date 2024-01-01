@@ -1,47 +1,37 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+  import { ref, onMounted } from "vue";
+  import ArticlesList from "./components/ArticlesList.vue";
+
+  const articlesList = ref([]);
+  const isLoading = ref(true);
+  const limitOfNumberArticlesToDisplay = 5;
+  const limitOfDaysToDisplay = 7;
+  const currentDate = "2023-06-03T13:51:50.417Z";
+  const filterItems = ['news', 'essay'];
+
+  onMounted(async () => {
+    try {
+      articlesList.value = await window.LATEST_ARTICLES;
+    } catch(e) {
+      console.log(e);
+    } finally {
+      isLoading.value = false;
+    }    
+  })
+
 </script>
 
-<template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+<template>  
+  <ArticlesList
+    :articlesList="articlesList"
+    :isLoading="isLoading"
+    :limitOfNumberArticlesToDisplay="limitOfNumberArticlesToDisplay"
+    :limitOfDaysToDisplay="limitOfDaysToDisplay"
+    :currentDate="currentDate"
+    :filterItems="filterItems"
+  />
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-}
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
 </style>
