@@ -27,5 +27,10 @@
 </script>
 
 <style scoped>
-
+  .filter-item {
+    font-size: 1.2rem;
+    gap: 0.3rem;
+    display: flex;
+    text-transform: capitalize;
+  }
 </style>
